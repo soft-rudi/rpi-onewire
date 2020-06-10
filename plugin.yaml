@@ -37,7 +37,6 @@ parameters:
             de: 'Verzeichnis des Onewire'
             en: 'Directory of onewire provided'
 
-
 item_attributes:
     rpi1wire_id:
         type: str
@@ -46,11 +45,15 @@ item_attributes:
             en: 'Sensor address in xx-yyyyyyyyyyyy format (Please note: If the sensor address is numerical, it has to be enclosed in quotes) or an alias'
             fr: 'Adresse du capteur au format xx-yyyyyyyyyyyy'
 
-    rpi1wire_update:
-        type: bool
+    rpi1wire_sys:
+        type: str
         description:
-            de: 'Started bei Triggerung ein Update der Sensorliste'
-            en: 'Rereads the sensor list after being triggered'
+            de: 'Attribut für Globale Plugin Items zum Triggern eines Update, Anzeigen der Anzahl gefundener Sensoren oder Auflistung der gefundenen Sensoren'
+            en: 'Attribute for global plugin items to trigger value read update, count of sensors and list of sensores'
+        valid_list:
+          - update  # de: 'Started bei Triggerung ein Update der Sensorliste'; en: 'Rereads the sensor list after being triggered'
+          - list    # de: 'Liste mit allen am Zielort gefundenen Sensoren'; en: 'List showing all found sensors'
+          - count   # de: 'Anzahl der am Zielort gefundenen Sensoren'; en: 'Count of all found sensors'
 
 item_structs: NONE
     # Definition of item-structure templates for this plugin (enter 'item_structs: NONE', if section should be empty)

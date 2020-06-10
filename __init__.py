@@ -106,13 +106,8 @@ class Rpi1Wire(SmartPlugin):
         self.update_basics()
 
     def update_basics(self):
-        # ToDo:
-        # using "rpi1wire" is a bad idea since this is also likely used as plugin name
-        # better make it an item attribute and search for that
         anz = self.get_sh().return_item(self.sysitems['count'])
-        #anz = self.get_sh().return_item("rpi1wire.sensors")
         ids = self.get_sh().return_item(self.sysitems['list'])
-        #ids = self.get_sh().return_item("rpi1wire.sensor_list")
         if anz != None:
             anz(int(self.anz_sensors),'rpi1wire')
             self.logger.debug("rpi1wire-item sensors value = {0}".format(self.anz_sensors))
@@ -140,10 +135,6 @@ class Rpi1Wire(SmartPlugin):
                         with the item, caller, source and dest as arguments and in case of the knx plugin the value
                         can be sent to the knx with a knx write function within the knx plugin.
         """
-#        if self.has_iattr(item.conf, 'rpi1wire_update'):
-#            self.logger.info("parse item: {}".format(item))
-#            ad = self.get_iattr_value( item.conf,'rpi1wire_update')
-#            return self.update_item
             
         if self.has_iattr(item.conf, 'rpi1wire_sys'):
             type = self.get_iattr_value( item.conf, 'rpi1wire_sys')
@@ -153,18 +144,14 @@ class Rpi1Wire(SmartPlugin):
             try:
                 sitem = item._path
                 self.sysitems[type] = str(sitem)
-                self.logger.info("Item {0} zuweisung erfolgt auf Item{1}".format(item,sitem))
+                self.logger.info("Item {0} assignment on Item {1} successful".format(item,sitem))
             except:
-                self.logger.warning("Item {0} zuweisung fehlgeschlgen auf Item{1}".format(item,sitem))
+                self.logger.warning("Item {0} assignment on Item {1} not successful".format(item,sitem))
             return None
 
         if not self.has_iattr(item.conf, 'rpi1wire_id'):
             if not self.has_iattr(item.conf, 'rpi1wire_name'):
                 return None
-
-        if not self.has_iattr(item.conf, 'rpi1wire_unit'):
-            self.logger.warning("rpi1wire_unit for {0} not defined".format(item.id()))
-            return None
 
         not_found = False
         if self.has_iattr(item.conf, 'rpi1wire_id'):
@@ -175,7 +162,7 @@ class Rpi1Wire(SmartPlugin):
                         name = sn
                         break
             except:
-                self.logger.warning("Sensor {0} as Item defind but Hardware not found".format(self.get_iattr_value( item.conf,'rpi1wire_id')))
+                self.logger.warning("Sensor {0} as Item defined but Hardware not found".format(self.get_iattr_value( item.conf,'rpi1wire_id')))
                 not_found = True
         else:
             if self.has_iattr(item.conf, 'rpi1wire_name'):
@@ -231,7 +218,7 @@ class Rpi1Wire(SmartPlugin):
                 temp(round(value/float(1000),1), "rpi1wire")
                 self._sensordaten[id]['value'] = round(value/float(1000),1)
             except:
-                self.logger.info("sensor {0} has no item".format(id))
+                self.logger.info("Sensor {0} has no item".format(id))
 
     def get_sensors(self): #Hier werden die angeschlossenen Sensoren gesucht und in self.sensors, self.values und self._sensordaten eingetragen
         """
@@ -258,7 +245,7 @@ class Rpi1Wire(SmartPlugin):
                         self._sensordaten[sensor]= {'name' : "rpi_temp"+str(i), 'value' : round(value/float(1000),1)}
                         i+=1
         else:
-            self.logger.warning("rpi1wire did not find directory at {0}".format(self.dirname))
+            self.logger.warning("rpi1wire plugin did not find directory at {0}".format(self.dirname))
 
     def folder_objects(self, dirname, otype="all"):  # Sucht im übergebenen Verzeichnis nach Sensoren und übergibt diese als object
         """
