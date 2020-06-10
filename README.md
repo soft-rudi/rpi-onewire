@@ -84,7 +84,7 @@ someitem:
         rpi1wire: update
         name: Update Sensors
         type: bool
-        value: 0
+        inital_value: 0
         visu_acl: rw
 ```
 
@@ -98,16 +98,13 @@ The id or name of the 1-wire - sensor. Both attributes serve the same purpose.
 The Item having one of these attributes will receive the temperature measurement.
 The Item thus needs to be of type num.
 
-### rpi1wire_update
+### rpi1wire_sys: update
 
 If this item is triggered, the sensors are re-searched without restarting the server
 
 ### logic.yaml
 Please refer to the documentation generated from plugin.yaml metadata.
 
-## Methods
-
-update_sensors() can be called to force a reread of all sensors.
 
 ## Examples
 
@@ -120,7 +117,7 @@ someroom:
         type: num
         visu_acl: ro
         rpi1wire_name: rpi_temp1
-        sqlite: yes
+        database: yes
 ```
 
 ### Example 2
@@ -133,14 +130,25 @@ someroom:
         type: num
         visu_acl: ro
         rpi1wire_id: 28-0215018970ff
-        sqlite: yes
+        database: yes
 
 rpi1wire:
      update:
         name: Update Sensor-List
         type: bool
+        rpi1wire_sys: update
         visu_acl: rw
-        rpi1wire_update: 1
+        initial_value: 0
+    sensor_list:
+        rpi1wire_sys: list
+        name: Sensor List
+        type: str
+        visu_acl: ro
+    sensor_count:
+        rpi1wire_sys: count
+        name: Sensor Count
+        type: num
+        visu_acl: ro
 ```
 
 
